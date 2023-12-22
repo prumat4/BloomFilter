@@ -1,21 +1,23 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <vector>
+#include <bitset>
+#include <unordered_set>
+#include <random>
 
 constexpr uint16_t MAX_SIZE = 50;
+constexpr uint16_t NUM_HASH_FUNCTIONS = 9;
+constexpr uint16_t FILTER_SIZE = 0xFFFF; 
 
-uint16_t hash(const uint16_t k, const std::string& inputString) {
-    if (inputString.size() > MAX_SIZE)
-        return 0;
+uint16_t polyHash(const uint16_t coef, const std::string& inputString);
 
-    std::array<uint16_t, MAX_SIZE / 2> arr{};
+class BloomFilter {
+public:
+    void add(const std::string& inputString);
+    void clear();
+    bool possiblyContains(const std::string& inputString);
 
-    for (size_t i = 0, j = 0; i < inputString.size() - 1; i += 2, ++j) {
-        arr[j] = static_cast<uint16_t>(inputString[i]) + (static_cast<uint16_t>(inputString[i + 1]) << 8);
-    }
-
-    uint16_t res = 1;
-    for (const auto& elem : arr)
-        res = res * k + elem;
-    return res;
-}
+private:
+    std::bitset<FILTER_SIZE> filter;
+};
