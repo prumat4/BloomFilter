@@ -1,4 +1,4 @@
-#include "BloomFilter.hpp"
+#include "../src/BloomFilter.hpp"
 
 int main() {
     constexpr uint16_t iterations = 10; 
